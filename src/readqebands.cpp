@@ -87,9 +87,9 @@ void readalltogether(std::complex<double>*** kpoint_product,double** occupationn
    }
    /*reading the bands*/
    ss>>temp_double;
-   bands[kpoints-1][m-1]=temp_double;
+   bands[kpoints-1][m-1]=temp_double*sci_const::hatree2ev;
    ss>>temp_double;
-   bands[kpoints-1][n-1]=temp_double;
+   bands[kpoints-1][n-1]=temp_double*sci_const::hatree2ev;
    /*reading the occupations*/
    ss>>temp_double;
    occupationnumber[kpoints-1][m-1]=temp_double/2.0;
