@@ -1,5 +1,5 @@
 &input
 kmesh 8 8 8
 datafile pmat.dat
-bands out_nscf
+bands BaTiO3_nscf.out
 /
