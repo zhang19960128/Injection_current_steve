@@ -83,15 +83,13 @@ int main(int argc,char* argv[]){
   double volume;
   double kweightsum=0.0;
   if(world_rank==0){
-  readbands(bands_array,kpointscount,bandnumber,bandsfile.c_str());
-  readkpoints(kpoints_array,kweight,kpointscount,volume,bandsfile.c_str());
-  readoccupation(occupation_array,kpointscount,bandnumber,bandsfile.c_str());
-  readvmatrix(kpoint_product_array,kpointscount,bandnumber,vmatrix.c_str());
+ // readbands(bands_array,kpointscount,bandnumber,bandsfile.c_str());
+  readkpoints(kweight,volume,bandsfile.c_str());
+ // readoccupation(occupation_array,kpointscount,bandnumber,bandsfile.c_str());
+ // readvmatrix(kpoint_product_array,kpointscount,bandnumber,vmatrix.c_str());
+  readalltogether(kpoint_product_array,occupation_array,bands_array,kpointscount,bandnumber,vmatrix.c_str());
   for(size_t i=0;i<kpointscount;i++){
-    kweightsum=kweightsum+kweight[i];
-  }
-  for(size_t i=0;i<kpointscount;i++){
-    kweight[i]=kweight[i]/kweightsum;
+    kweight[i]=1.0/kpointscount;
   }
   }
   else{

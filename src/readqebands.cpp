@@ -50,6 +50,7 @@ void readvmatrix(std::complex<double>*** kpoint_product,int kpoints,int bandnumb
    ss>>kpoints;
    ss>>m;
    ss>>n;
+   if(m<n){
    for(size_t i=0;i<3;i++){
     ss>>temp_double;
     kpoint_product[i][kpoints-1][findindex(m-1,n-1,bandnumber)].real(temp_double);
@@ -58,10 +59,47 @@ void readvmatrix(std::complex<double>*** kpoint_product,int kpoints,int bandnumb
     ss>>temp_double;
     kpoint_product[i][kpoints-1][findindex(m-1,n-1,bandnumber)].imag(temp_double);
    }
+   }
  }
 fs.close();
 }
-void readkpoints(double** kpoints,double* kweight,int kpoints_count,double& volume,std::string outnscf){
+void readalltogether(std::complex<double>*** kpoint_product,double** occupationnumber,double** bands,int kpoints,int bandnumber,std::string pmat){
+ std::fstream fs;
+ std::stringstream ss;
+ fs.open(pmat.c_str(),std::fstream::in);
+ std::string temp;
+ int m,n;
+ double temp_double;
+ while(getline(fs,temp)){
+   ss.clear();
+   ss.str(temp);
+   ss>>kpoints;
+   ss>>m;
+   ss>>n;
+   if(m<=n){
+   for(size_t i=0;i<3;i++){
+    ss>>temp_double;
+    kpoint_product[i][kpoints-1][findindex(m-1,n-1,bandnumber)].real(temp_double);
+   }
+   for(size_t i=0;i<3;i++){
+    ss>>temp_double;
+    kpoint_product[i][kpoints-1][findindex(m-1,n-1,bandnumber)].imag(temp_double);
+   }
+   /*reading the bands*/
+   ss>>temp_double;
+   bands[kpoints-1][m-1]=temp_double*sci_const::hatree2ev;
+   ss>>temp_double;
+   bands[kpoints-1][n-1]=temp_double*sci_const::hatree2ev;
+   /*reading the occupations*/
+   ss>>temp_double;
+   occupationnumber[kpoints-1][m-1]=temp_double/2.0;
+   ss>>temp_double;
+   occupationnumber[kpoints-1][n-1]=temp_double/2.0;
+   }
+ }
+fs.close();
+}
+void readkpoints(double* kweight,double& volume,std::string outnscf){
   std::fstream fs;
   fs.open(outnscf.c_str(),std::fstream::in);
   std::string temp;
@@ -88,26 +126,6 @@ void readkpoints(double** kpoints,double* kweight,int kpoints_count,double& volu
     ss>>volume;
     volume=volume*sci_const::rbohr*sci_const::rbohr*sci_const::rbohr/sci_const::alat/sci_const::alat/sci_const::alat;
     ss.clear();
-    }
-    if(temp.find("cart. coord. in units 2pi/alat")!=std::string::npos){
-    for(size_t i=0;i<kpoints_count;i++){
-        getline(fs,temp);
-        ss.clear();
-        ss.str(temp);
-        for(size_t j=0;j<4;j++){
-          ss>>useless;
-        }
-        ss>>kx;
-        ss>>ky;
-        ss>>kz;
-        kpoints[i][0]=kx;
-        kpoints[i][1]=ky;
-        kpoints[i][2]=kz;
-        ss>>useless;
-        ss>>useless;
-        ss>>useless;
-        ss>>kweight[i];
-      }
     }
   }
   fs.close();
