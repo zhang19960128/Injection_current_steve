@@ -10,7 +10,6 @@ extern double root2;
 extern double rootpi;
 extern double ev2j;
 extern double hztocm;
-extern double hatree2ev;
 extern double alat;
 extern int kx;
 extern int ky;

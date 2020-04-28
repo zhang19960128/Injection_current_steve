@@ -9,7 +9,6 @@ double root2=1.41421356237;
 double rootpi=1.77245385091;
 double ev2j=1.60218*1e-19;
 double hztocm=2.9*1e10;
-double hatree2ev=27.2114;
 double alat;
 int kx;
 int ky;

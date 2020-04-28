@@ -50,7 +50,6 @@ void readvmatrix(std::complex<double>*** kpoint_product,int kpoints,int bandnumb
    ss>>kpoints;
    ss>>m;
    ss>>n;
-   if(m<n){
    for(size_t i=0;i<3;i++){
     ss>>temp_double;
     kpoint_product[i][kpoints-1][findindex(m-1,n-1,bandnumber)].real(temp_double);
@@ -58,43 +57,6 @@ void readvmatrix(std::complex<double>*** kpoint_product,int kpoints,int bandnumb
    for(size_t i=0;i<3;i++){
     ss>>temp_double;
     kpoint_product[i][kpoints-1][findindex(m-1,n-1,bandnumber)].imag(temp_double);
-   }
-   }
- }
-fs.close();
-}
-void readalltogether(std::complex<double>*** kpoint_product,double** occupationnumber,double** bands,int kpoints,int bandnumber,std::string pmat){
- std::fstream fs;
- std::stringstream ss;
- fs.open(pmat.c_str(),std::fstream::in);
- std::string temp;
- int m,n;
- double temp_double;
- while(getline(fs,temp)){
-   ss.clear();
-   ss.str(temp);
-   ss>>kpoints;
-   ss>>m;
-   ss>>n;
-   if(m<=n){
-   for(size_t i=0;i<3;i++){
-    ss>>temp_double;
-    kpoint_product[i][kpoints-1][findindex(m-1,n-1,bandnumber)].real(temp_double);
-   }
-   for(size_t i=0;i<3;i++){
-    ss>>temp_double;
-    kpoint_product[i][kpoints-1][findindex(m-1,n-1,bandnumber)].imag(temp_double);
-   }
-   /*reading the bands*/
-   ss>>temp_double;
-   bands[kpoints-1][m-1]=temp_double*sci_const::hatree2ev;
-   ss>>temp_double;
-   bands[kpoints-1][n-1]=temp_double*sci_const::hatree2ev;
-   /*reading the occupations*/
-   ss>>temp_double;
-   occupationnumber[kpoints-1][m-1]=temp_double/2.0;
-   ss>>temp_double;
-   occupationnumber[kpoints-1][n-1]=temp_double/2.0;
    }
  }
 fs.close();
